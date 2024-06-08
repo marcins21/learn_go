@@ -11,13 +11,13 @@ import (
 func main() {
 	reader := bufio.NewReader(os.Stdin)
 	for {
-		fmt.Print("> ")
+		fmt.Print("> ") // Prompt
 		input, err := reader.ReadString('\n')
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			continue
 		}
-		//Execute command
+		// Execute
 		if err = execInput(input); err != nil {
 			fmt.Fprintln(os.Stderr, err)
 		}
@@ -31,7 +31,11 @@ func execInput(input string) error {
 	}
 
 	args := strings.Split(input, " ")
-	// exec.Command("cmd", "/C", "user_command", "arg1", "arg2", ...)
+	if args[0] == "exit" {
+		os.Exit(0)
+	}
+
+	// This translates to: exec.Command("cmd", "/C", "user_command", "arg1", "arg2", ...)
 	cmd := exec.Command("cmd", append([]string{"/C"}, args...)...)
 	cmd.Stderr = os.Stderr
 	cmd.Stdout = os.Stdout
